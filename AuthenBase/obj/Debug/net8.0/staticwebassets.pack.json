@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\gali likitha\\source\\repos\\AuthenBase\\AuthenBase\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\AuthenBase.bundle.scp.css",
+      "PackagePath": "staticwebassets\\AuthenBase.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\gali likitha\\source\\repos\\AuthenBase\\AuthenBase\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\gali likitha\\source\\repos\\AuthenBase\\AuthenBase\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\gali likitha\\source\\repos\\AuthenBase\\AuthenBase\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\gali likitha\\source\\repos\\AuthenBase\\AuthenBase\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.AuthenBase.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.AuthenBase.props",
+      "PackagePath": "build\\AuthenBase.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.AuthenBase.props",
+      "PackagePath": "buildMultiTargeting\\AuthenBase.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.AuthenBase.props",
+      "PackagePath": "buildTransitive\\AuthenBase.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

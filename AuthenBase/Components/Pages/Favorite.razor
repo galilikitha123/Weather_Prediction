@@ -1,0 +1,144 @@
+﻿@page "/favorite"
+@using AuthenBase.Models
+@using AuthenBase.Services
+@inject FavoriteCityService FavoriteCityService
+@inject HttpClient httpClient
+@rendermode InteractiveServer
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization
+
+<PageTitle>Favorite Cities</PageTitle>
+
+<style>
+    h1 {
+        color: purple;
+    }
+
+    .favorite-city {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .favorite-city h3 {
+            margin-top: 0;
+            font-size: 1.7em;
+        }
+
+        .favorite-city p {
+            margin: 5px 0;
+        }
+
+    .delete-icon {
+        cursor: pointer;
+        color: #888;
+        font-size: 1.5em;
+        border: 1px solid purple;
+        padding: 5px;
+        border-radius: 50%;
+    }
+
+        .delete-icon:hover {
+            color: #f00;
+            border-color: white;
+        }
+
+    .favorite-icon {
+        margin-right: 7px;
+    }
+</style>
+
+<h1><span class="favorite-icon">★</span> Favorite Cities <span class="favorite-icon">★</span></h1>
+
+
+@if (isLoading)
+{
+    <p>Loading...</p>
+}
+else
+{
+    @if (favoriteCities.Count > 0)
+    {
+        <div>
+            @foreach (var city in favoriteCities)
+            {
+                <div class="favorite-city">
+                    <div>
+                        <h3>@city</h3>
+                        @if (weatherDict.ContainsKey(city))
+                        {
+                            <p>Temperature: @weatherDict[city].Main.Temp °C</p>
+                            <p>Feels Like: @weatherDict[city].Main.feels_like °C</p>
+                            <p>Humidity: @weatherDict[city].Main.humidity %</p>
+                            <p>Pressure: @weatherDict[city].Main.pressure hPa</p>
+                        }
+                        else
+                        {
+                            <p>Loading...</p>
+                        }
+                    </div>
+                    <span class="delete-icon" @onclick="() => RemoveFavoriteCity(city)">🗑</span>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No favorite cities added yet.</p>
+    }
+}
+
+@code {
+    private List<string> favoriteCities = new List<string>();
+    private Dictionary<string, WeatherforcastingModel> weatherDict = new Dictionary<string, WeatherforcastingModel>();
+    private string ApiKey = "071c3423863f9b0f3ba1f1ce12c0ded9";
+    private bool isLoading = true;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadFavoriteCities();
+            await LoadWeatherForFavoriteCities();
+            StateHasChanged();
+        }
+    }
+
+    private async Task LoadFavoriteCities()
+    {
+        favoriteCities = await FavoriteCityService.GetFavoriteCitiesAsync();
+        isLoading = false;
+    }
+
+    private async Task RemoveFavoriteCity(string cityName)
+    {
+        await FavoriteCityService.RemoveFavoriteCityAsync(cityName);
+        await LoadFavoriteCities();
+        await LoadWeatherForFavoriteCities();
+    }
+
+    private async Task LoadWeatherForFavoriteCities()
+    {
+        weatherDict.Clear();
+        foreach (var city in favoriteCities)
+        {
+            try
+            {
+                string apiUrl = $"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={ApiKey}&units=metric";
+                var response = await httpClient.GetFromJsonAsync<WeatherforcastingModel>(apiUrl);
+                if (response != null)
+                {
+                    weatherDict[city] = response;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching weather for {city}: {ex.Message}");
+            }
+        }
+    }
+}
